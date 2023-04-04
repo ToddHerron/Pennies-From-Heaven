@@ -37,10 +37,10 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>penniesfromheaven.com</string>
+        <string>pennies_from_heaven</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>penniesfromheaven</string>
+        <string>com.mycompany.penniesfromheaven</string>
         </array>
         </dict>
     </array>
