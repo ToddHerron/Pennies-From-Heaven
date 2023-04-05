@@ -11,9 +11,21 @@ import '../backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../auth/auth_util.dart';
 
-bool isValidEmail(String email) {
-  // validate syntax of email address
-  final RegExp regex = RegExp(
-      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
-  return regex.hasMatch(email);
+double getDoubleValueFromString(String? testString) {
+  // returns non-negative double parse of string, otherwise returns 0.0
+
+  String s;
+  s = testString ??= ""; // convert null string to empty string
+  s = s.replaceAll("\$", "");
+  s = s.replaceAll("-", "");
+  s = s.replaceAll(",", "");
+  s = s.replaceAll(" ", "");
+  if (double.tryParse(s) == null) return 0.0;
+  return (double.parse(s) * 100).round() / 100;
+}
+
+String? formatDonationAmount(String? inputDonationAmount) {
+  var _i = inputDonationAmount ?? '0.00';
+  var f = NumberFormat("\$###,###.00", "en_CA");
+  return f.format(_i);
 }
