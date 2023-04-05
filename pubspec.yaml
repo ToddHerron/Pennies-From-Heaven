@@ -44,6 +44,7 @@ dependencies:
   firebase_dynamic_links_platform_interface: 0.2.3+24
   flutter_animate: 1.0.0
   flutter_cache_manager: 3.3.0
+  flutter_credit_card: ^3.0.6
   flutter_secure_storage: 6.0.0
   font_awesome_flutter: 10.1.0
   from_css_color: 2.0.0
