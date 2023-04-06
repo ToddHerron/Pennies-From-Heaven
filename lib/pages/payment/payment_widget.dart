@@ -47,27 +47,27 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      appBar: AppBar(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+      child: Scaffold(
+        key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Donation',
-          style: FlutterFlowTheme.of(context).headlineMedium.override(
-                fontFamily: 'Poppins',
-                color: FlutterFlowTheme.of(context).secondaryBackground,
-                fontSize: 22.0,
-              ),
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Donation',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Poppins',
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                  fontSize: 22.0,
+                ),
+          ),
+          actions: [],
+          centerTitle: true,
+          elevation: 0.0,
         ),
-        actions: [],
-        centerTitle: true,
-        elevation: 0.0,
-      ),
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+        body: SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
