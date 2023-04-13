@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
+// This code produces an error when compiled online
+// But does not produce an error when compiled natively
+
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_credit_card/constants.dart';
 import 'package:flutter_credit_card/credit_card_brand.dart';
