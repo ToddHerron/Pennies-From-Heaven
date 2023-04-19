@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -89,13 +90,13 @@ class _TestPageWidgetState extends State<TestPageWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Hello World',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Poppins',
-                            color: FlutterFlowTheme.of(context).warning,
-                            fontSize: 30.0,
-                          ),
+                    Container(
+                      width: 390.0,
+                      height: 844.0,
+                      child: custom_widgets.CustomCreditCardWidget(
+                        width: 390.0,
+                        height: 844.0,
+                      ),
                     ),
                   ],
                 ),

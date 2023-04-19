@@ -69,10 +69,15 @@ class _DonationWidgetState extends State<DonationWidget> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              wrapWithModel(
-                model: _model.rowLogoAndNameModel,
-                updateCallback: () => setState(() {}),
-                child: RowLogoAndNameWidget(),
+              InkWell(
+                onTap: () async {
+                  context.pushNamed('TestPage');
+                },
+                child: wrapWithModel(
+                  model: _model.rowLogoAndNameModel,
+                  updateCallback: () => setState(() {}),
+                  child: RowLogoAndNameWidget(),
+                ),
               ),
               wrapWithModel(
                 model: _model.donationLoggedInModel,
