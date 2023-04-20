@@ -110,6 +110,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'TestPage',
               path: 'testPage',
               builder: (context, params) => TestPageWidget(),
+            ),
+            FFRoute(
+              name: 'GhostImagePage',
+              path: 'ghostImagePage',
+              builder: (context, params) => GhostImagePageWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),
