@@ -24,6 +24,7 @@ class AppColors {
   static const Color colorFFFFFD = Color(0xffFFFFFD);
 }
 
+// Version 1
 class CustomCreditCardWidget extends StatefulWidget {
   const CustomCreditCardWidget({
     Key? key,
