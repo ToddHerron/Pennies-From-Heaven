@@ -91,11 +91,11 @@ class _TestPageWidgetState extends State<TestPageWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 390.0,
-                      height: 844.0,
+                      width: MediaQuery.of(context).size.width * 1.0,
+                      height: MediaQuery.of(context).size.height * 1.0,
                       child: custom_widgets.CustomCreditCardWidget(
-                        width: 390.0,
-                        height: 844.0,
+                        width: MediaQuery.of(context).size.width * 1.0,
+                        height: MediaQuery.of(context).size.height * 1.0,
                       ),
                     ),
                   ],
