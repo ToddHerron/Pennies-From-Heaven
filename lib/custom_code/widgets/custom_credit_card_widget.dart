@@ -68,7 +68,7 @@ class _CustomCreditCardWidgetState extends State<CustomCreditCardWidget> {
       height: widget.height,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: ExactAssetImage('assets/bg.png'),
+          image: ExactAssetImage('images/bg.png'),
           fit: BoxFit.fill,
         ),
         color: Colors.black,

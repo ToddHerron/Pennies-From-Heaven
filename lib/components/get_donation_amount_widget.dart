@@ -241,6 +241,10 @@ class _GetDonationAmountWidgetState extends State<GetDonationAmountWidget>
                           scrollDirection: Axis.vertical,
                           children: [
                             InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
                               onTap: () async {
                                 _model.updatePage(() {});
                               },

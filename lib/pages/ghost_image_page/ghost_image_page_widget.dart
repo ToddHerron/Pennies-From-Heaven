@@ -78,23 +78,44 @@ class _GhostImagePageWidgetState extends State<GhostImagePageWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Image.asset(
-                'assets/images/mastercard.png',
-                width: 100.0,
-                height: 100.0,
-                fit: BoxFit.cover,
-              ),
-              Image.asset(
-                'assets/images/card_bg.png',
-                width: 100.0,
-                height: 100.0,
-                fit: BoxFit.cover,
-              ),
-              Image.asset(
-                'assets/images/bg.png',
-                width: 100.0,
-                height: 100.0,
-                fit: BoxFit.cover,
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
+                      child: Image.asset(
+                        'assets/images/bg.png',
+                        width: 100.0,
+                        height: 100.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
+                      child: Image.asset(
+                        'assets/images/mastercard.png',
+                        width: 100.0,
+                        height: 100.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
+                      child: Image.asset(
+                        'assets/images/card_bg.png',
+                        width: 100.0,
+                        height: 100.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

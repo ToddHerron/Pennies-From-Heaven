@@ -5,7 +5,7 @@ import '../../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 
 const _kDynamicLinksUrl = 'https://penniesfromheaven.app';
-const _kAppId = 'com.mycompany.penniesfromheaven';
+const _kAppBundleId = 'com.mycompany.penniesfromheaven';
 
 Future<String> generateCurrentPageLink(
   BuildContext context, {
@@ -13,17 +13,23 @@ Future<String> generateCurrentPageLink(
   String? description,
   String? imageUrl,
   bool isShortLink = true,
+  bool forceRedirect = false,
 }) async {
   final dynamicLinkParams = DynamicLinkParameters(
     link: Uri.parse('$_kDynamicLinksUrl${GoRouter.of(context).location}'),
     uriPrefix: _kDynamicLinksUrl,
-    androidParameters: const AndroidParameters(packageName: _kAppId),
-    iosParameters: const IOSParameters(bundleId: _kAppId),
+    androidParameters: const AndroidParameters(packageName: _kAppBundleId),
+    iosParameters: const IOSParameters(
+      bundleId: _kAppBundleId,
+    ),
     socialMetaTagParameters: SocialMetaTagParameters(
       title: title,
       description: description,
       imageUrl: imageUrl != null ? Uri.tryParse(imageUrl) : null,
     ),
+    navigationInfoParameters: forceRedirect
+        ? NavigationInfoParameters(forcedRedirectEnabled: true)
+        : null,
   );
   return isShortLink
       ? FirebaseDynamicLinks.instance
