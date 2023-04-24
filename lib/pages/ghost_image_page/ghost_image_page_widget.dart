@@ -88,7 +88,7 @@ class _GhostImagePageWidgetState extends State<GhostImagePageWidget> {
                       padding:
                           EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
                       child: Image.asset(
-                        'assets/images/bg.png',
+                        'assets/images/Logo_-_Two_Heart_and_Hand.png',
                         width: 100.0,
                         height: 100.0,
                         fit: BoxFit.cover,
@@ -98,7 +98,7 @@ class _GhostImagePageWidgetState extends State<GhostImagePageWidget> {
                       padding:
                           EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
                       child: Image.asset(
-                        'assets/images/mastercard.png',
+                        'assets/images/Logo_-_Two_Heart_and_Hand.png',
                         width: 100.0,
                         height: 100.0,
                         fit: BoxFit.cover,
@@ -108,7 +108,7 @@ class _GhostImagePageWidgetState extends State<GhostImagePageWidget> {
                       padding:
                           EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
                       child: Image.asset(
-                        'assets/images/card_bg.png',
+                        'assets/images/Logo_-_Two_Heart_and_Hand.png',
                         width: 100.0,
                         height: 100.0,
                         fit: BoxFit.cover,
