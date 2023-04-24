@@ -68,7 +68,7 @@ class _CustomCreditCardWidgetState extends State<CustomCreditCardWidget> {
       height: widget.height,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: ExactAssetImage('images/bg.png'),
+          image: ExactAssetImage('assets/images/bg.png'),
           fit: BoxFit.fill,
         ),
         color: Colors.black,
@@ -96,14 +96,15 @@ class _CustomCreditCardWidgetState extends State<CustomCreditCardWidget> {
             obscureCardCvv: false,
             isHolderNameVisible: true,
             cardBgColor: AppColors.cardBgColor,
-            backgroundImage: useBackgroundImage ? 'images/card_bg.png' : null,
+            backgroundImage:
+                useBackgroundImage ? 'assets/images/card_bg.png' : null,
             isSwipeGestureEnabled: true,
             onCreditCardWidgetChange: (CreditCardBrand creditCardBrand) {},
             customCardTypeIcons: <CustomCardTypeIcon>[
               CustomCardTypeIcon(
                 cardType: CardType.mastercard,
                 cardImage: Image.asset(
-                  'images/mastercard.png',
+                  'assets/images/mastercard.png',
                   height: 48,
                   width: 48,
                 ),
