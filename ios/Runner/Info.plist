@@ -28,7 +28,7 @@
             <string>Editor</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>com.googleusercontent.apps.1002814025305-f6t2dnusln6tvgln97k0vmpp8hehh0md</string>
+                <string>com.googleusercontent.apps.1002814025305-tpk6id4kbcjf15vmfeu9g20249erhf8j</string>
                 
             </array>
         </dict>
@@ -37,10 +37,10 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>pennies_from_heaven</string>
+        <string>penniesfromheaven.app</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>com.mycompany.penniesfromheaven</string>
+        <string>penniesfromheaven</string>
         </array>
         </dict>
     </array>

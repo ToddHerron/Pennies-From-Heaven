@@ -1,4 +1,4 @@
-package com.mycompany.penniesfromheaven
+package com.humansunlimited.penniesfromheaven
 
 import io.flutter.embedding.android.FlutterActivity
 

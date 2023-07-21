@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mycompany.penniesfromheaven"
+    package="com.humansunlimited.penniesfromheaven"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -45,8 +45,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="penniesfromheaven.app" />
-                <data android:scheme="https" />
+                <data android:scheme="penniesfromheaven" android:host="penniesfromheaven.app" />
             </intent-filter>
 
         </activity>

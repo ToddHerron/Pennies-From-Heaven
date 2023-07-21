@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
 import '../flutter_flow_theme.dart';
-import '../../backend/backend.dart';
+import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 
-import '../../auth/firebase_user_provider.dart';
+import '../../auth/base_auth_user_provider.dart';
 
-import '../../backend/firebase_dynamic_links/firebase_dynamic_links.dart'
-    show DynamicLinksHandler;
 import '../../index.dart';
 import '../../main.dart';
 import '../lat_lng.dart';
@@ -18,14 +18,17 @@ import 'serialization_util.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
-export '../../backend/firebase_dynamic_links/firebase_dynamic_links.dart'
-    show generateCurrentPageLink;
 
 const kTransitionInfoKey = '__transition_info__';
 
 class AppStateNotifier extends ChangeNotifier {
-  PenniesFromHeavenFirebaseUser? initialUser;
-  PenniesFromHeavenFirebaseUser? user;
+  AppStateNotifier._();
+
+  static AppStateNotifier? _instance;
+  static AppStateNotifier get instance => _instance ??= AppStateNotifier._();
+
+  BaseAuthUser? initialUser;
+  BaseAuthUser? user;
   bool showSplashImage = true;
   String? _redirectLocation;
 
@@ -50,11 +53,14 @@ class AppStateNotifier extends ChangeNotifier {
   /// to perform subsequent actions (such as navigation) afterwards.
   void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
 
-  void update(PenniesFromHeavenFirebaseUser newUser) {
+  void update(BaseAuthUser newUser) {
+    final shouldUpdate =
+        user?.uid == null || newUser.uid == null || user?.uid != newUser.uid;
     initialUser ??= newUser;
     user = newUser;
     // Refresh the app on auth change unless explicitly marked otherwise.
-    if (notifyOnAuthChange) {
+    // No need to update unless the user has changed.
+    if (notifyOnAuthChange && shouldUpdate) {
       notifyListeners();
     }
     // Once again mark the notifier as needing to update on auth change
@@ -72,32 +78,36 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? NavBarPage() : DonationWidget(),
-      navigatorBuilder: (_, __, child) => DynamicLinksHandler(child: child),
+      errorBuilder: (context, state) =>
+          appStateNotifier.loggedIn ? NavBarPage() : LoginWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : DonationWidget(),
+              appStateNotifier.loggedIn ? NavBarPage() : LoginWidget(),
           routes: [
             FFRoute(
               name: 'Donation',
-              path: 'home',
+              path: 'donation',
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Donation')
-                  : DonationWidget(),
+                  : DonationWidget(
+                      donationAmount:
+                          params.getParam('donationAmount', ParamType.double),
+                    ),
             ),
             FFRoute(
               name: 'Payment',
               path: 'payment',
+              builder: (context, params) => PaymentWidget(),
+            ),
+            FFRoute(
+              name: 'ThankYou',
+              path: 'thankYou',
               builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'Payment')
-                  : PaymentWidget(
-                      donationAmount:
-                          params.getParam('donationAmount', ParamType.double),
-                    ),
+                  ? NavBarPage(initialPage: 'ThankYou')
+                  : ThankYouWidget(),
             ),
             FFRoute(
               name: 'Account',
@@ -105,11 +115,118 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Account')
                   : AccountWidget(),
+            ),
+            FFRoute(
+              name: 'PaymentOptions',
+              path: 'paymentOptions',
+              builder: (context, params) => PaymentOptionsWidget(),
+            ),
+            FFRoute(
+              name: 'Country',
+              path: 'country',
+              builder: (context, params) => CountryWidget(),
+            ),
+            FFRoute(
+              name: 'Profile',
+              path: 'profile',
+              builder: (context, params) => ProfileWidget(),
+            ),
+            FFRoute(
+              name: 'Notifications',
+              path: 'notifications',
+              builder: (context, params) => NotificationsWidget(),
+            ),
+            FFRoute(
+              name: 'Support',
+              path: 'support',
+              builder: (context, params) => SupportWidget(),
+            ),
+            FFRoute(
+              name: 'TermOfService',
+              path: 'termOfService',
+              builder: (context, params) => TermOfServiceWidget(),
+            ),
+            FFRoute(
+              name: 'DonationsList',
+              path: 'donationsList',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'DonationsList')
+                  : DonationsListWidget(),
+            ),
+            FFRoute(
+              name: 'TempLoginPage',
+              path: 'tempLoginPage',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'TempLoginPage')
+                  : TempLoginPageWidget(),
+            ),
+            FFRoute(
+              name: 'Login',
+              path: 'login',
+              builder: (context, params) => LoginWidget(),
+            ),
+            FFRoute(
+              name: 'CreateAccount',
+              path: 'createAccount',
+              builder: (context, params) => CreateAccountWidget(),
+            ),
+            FFRoute(
+              name: 'PasswordRules',
+              path: 'passwordRules',
+              builder: (context, params) => PasswordRulesWidget(),
+            ),
+            FFRoute(
+              name: 'DonationWizard',
+              path: 'donationWizard',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'DonationWizard')
+                  : DonationWizardWidget(
+                      wizardPage: params.getParam('wizardPage', ParamType.int),
+                    ),
+            ),
+            FFRoute(
+              name: 'ClientDonation',
+              path: 'clientDonation',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'ClientDonation')
+                  : ClientDonationWidget(),
+            ),
+            FFRoute(
+              name: 'Dashboard',
+              path: 'dashboard',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'Dashboard')
+                  : DashboardWidget(),
+            ),
+            FFRoute(
+              name: 'CharitiesList',
+              path: 'CharitiesList',
+              builder: (context, params) => CharitiesListWidget(),
+            ),
+            FFRoute(
+              name: 'CharityDetails',
+              path: 'charityDetails',
+              builder: (context, params) => CharityDetailsWidget(
+                charityRecordID: params.getParam('charityRecordID',
+                    ParamType.DocumentReference, false, ['charities']),
+              ),
+            ),
+            FFRoute(
+              name: 'AddCharity',
+              path: 'addCharity',
+              builder: (context, params) => AddCharityWidget(),
+            ),
+            FFRoute(
+              name: 'CharityUpdate',
+              path: 'charityUpdate',
+              builder: (context, params) => CharityUpdateWidget(
+                charityRecordID: params.getParam('charityRecordID',
+                    ParamType.DocumentReference, false, ['charities']),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
-      urlPathStrategy: UrlPathStrategy.path,
     );
 
 extension NavParamExtensions on Map<String, String?> {
@@ -124,8 +241,8 @@ extension NavigationExtensions on BuildContext {
   void goNamedAuth(
     String name,
     bool mounted, {
-    Map<String, String> params = const <String, String>{},
-    Map<String, String> queryParams = const <String, String>{},
+    Map<String, String> pathParameters = const <String, String>{},
+    Map<String, String> queryParameters = const <String, String>{},
     Object? extra,
     bool ignoreRedirect = false,
   }) =>
@@ -133,16 +250,16 @@ extension NavigationExtensions on BuildContext {
           ? null
           : goNamed(
               name,
-              params: params,
-              queryParams: queryParams,
+              pathParameters: pathParameters,
+              queryParameters: queryParameters,
               extra: extra,
             );
 
   void pushNamedAuth(
     String name,
     bool mounted, {
-    Map<String, String> params = const <String, String>{},
-    Map<String, String> queryParams = const <String, String>{},
+    Map<String, String> pathParameters = const <String, String>{},
+    Map<String, String> queryParameters = const <String, String>{},
     Object? extra,
     bool ignoreRedirect = false,
   }) =>
@@ -150,25 +267,24 @@ extension NavigationExtensions on BuildContext {
           ? null
           : pushNamed(
               name,
-              params: params,
-              queryParams: queryParams,
+              pathParameters: pathParameters,
+              queryParameters: queryParameters,
               extra: extra,
             );
 
   void safePop() {
     // If there is only one route on the stack, navigate to the initial
     // page instead of popping.
-    if (GoRouter.of(this).routerDelegate.matches.length <= 1) {
-      go('/');
-    } else {
+    if (canPop()) {
       pop();
+    } else {
+      go('/');
     }
   }
 }
 
 extension GoRouterExtensions on GoRouter {
-  AppStateNotifier get appState =>
-      (routerDelegate.refreshListenable as AppStateNotifier);
+  AppStateNotifier get appState => AppStateNotifier.instance;
   void prepareAuthEvent([bool ignoreRedirect = false]) =>
       appState.hasRedirect() && !ignoreRedirect
           ? null
@@ -177,16 +293,15 @@ extension GoRouterExtensions on GoRouter {
       !ignoreRedirect && appState.hasRedirect();
   void clearRedirectLocation() => appState.clearRedirectLocation();
   void setRedirectLocationIfUnset(String location) =>
-      (routerDelegate.refreshListenable as AppStateNotifier)
-          .updateNotifyOnAuthChange(false);
+      appState.updateNotifyOnAuthChange(false);
 }
 
 extension _GoRouterStateExtensions on GoRouterState {
   Map<String, dynamic> get extraMap =>
       extra != null ? extra as Map<String, dynamic> : {};
   Map<String, dynamic> get allParams => <String, dynamic>{}
-    ..addAll(params)
-    ..addAll(queryParams)
+    ..addAll(pathParameters)
+    ..addAll(queryParameters)
     ..addAll(extraMap);
   TransitionInfo get transitionInfo => extraMap.containsKey(kTransitionInfoKey)
       ? extraMap[kTransitionInfoKey] as TransitionInfo
@@ -242,7 +357,8 @@ class FFParameters {
       return param;
     }
     // Return serialized value.
-    return deserializeParam<T>(param, type, isList, collectionNamePath);
+    return deserializeParam<T>(param, type, isList,
+        collectionNamePath: collectionNamePath);
   }
 }
 
@@ -266,7 +382,7 @@ class FFRoute {
   GoRoute toRoute(AppStateNotifier appStateNotifier) => GoRoute(
         name: name,
         path: path,
-        redirect: (state) {
+        redirect: (context, state) {
           if (appStateNotifier.shouldRedirect) {
             final redirectLocation = appStateNotifier.getRedirectLocation();
             appStateNotifier.clearRedirectLocation();
@@ -275,7 +391,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/home';
+            return '/login';
           }
           return null;
         },
@@ -288,12 +404,13 @@ class FFRoute {
                 )
               : builder(context, ffParams);
           final child = appStateNotifier.loading
-              ? Center(
-                  child: SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                    child: CircularProgressIndicator(
-                      color: FlutterFlowTheme.of(context).tertiary,
+              ? Container(
+                  color: Colors.transparent,
+                  child: Center(
+                    child: Image.asset(
+                      'assets/images/Logo_-_Two_Heart_and_Hand.png',
+                      width: double.infinity,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 )
@@ -332,5 +449,9 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() => TransitionInfo(
+        hasTransition: true,
+        transitionType: PageTransitionType.rightToLeft,
+        duration: Duration(milliseconds: 400),
+      );
 }
